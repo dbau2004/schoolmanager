@@ -15,43 +15,45 @@ import com.example.schoolmanager.service.StudentService;
 import com.example.schoolmanager.model.Student;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping(value = "/api/students", produces = "application/json;charset=UTF-8")
 @CrossOrigin // cho phép frontend gọi
 public class StudentController {
 
     @Autowired
     private StudentService service;
 
-    //1. API thêm sinh viên
+    // 1. API thêm sinh viên
     @PostMapping
     public Student addStudent(Student student) {
         return service.addStudent(student);
     }
-    //2. API xóa sinh viên
+
+    // 2. API xóa sinh viên
     @PostMapping("/delete/{id}")
     public String deleteStudent(@PathVariable int id) {
         service.deleteStudent(id);
         return "Student with ID " + id + " has been deleted.";
     }
-    //3. Tim kiếm sinh viên theo tên
+
+    // 3. Tim kiếm sinh viên theo tên
     @GetMapping("/search")
     public List<Student> searchByName(@RequestParam String name) {
         return service.findByName(name);
     }
 
-    //4. API lấy sinh viên theo ID
+    // 4. API lấy sinh viên theo ID
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable int id) {
         return service.getStudentById(id);
     }
 
-    //5. API lấy danh sách sinh viên
+    // 5. API lấy danh sách sinh viên
     @GetMapping
     public List<Student> getAllStudents() {
         return service.getAll();
     }
-    
-    //6. API cập nhật sinh viên
+
+    // 6. API cập nhật sinh viên
     @PostMapping("/update/{id}")
     public Student updateStudent(@PathVariable int id, @RequestParam String name, @RequestParam String email) {
         Student existingStudent = service.getStudentById(id);
