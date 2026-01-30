@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Manager API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        .endpoint {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: white;
+            margin-right: 10px;
+        }
+        .get { background: #61affe; }
+        .post { background: #49cc90; }
+        .delete { background: #f93e3e; }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        h2 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #667eea;
+            color: white;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 School Manager API</h1>
+        <p class="subtitle">Complete API documentation for Student Management System</p>
+
+        <div class="section">
+            <h2>📌 Base URL</h2>
+            <p><code>http://localhost:8081/api</code></p>
+            <p><em>Or your deployed server URL</em></p>
+        </div>
+
+        <div class="section">
+            <h2>📚 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/students</span>
+                <p><strong>Description:</strong> Retrieve all students</p>
+                <p><strong>Response:</strong> Array of student objects</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/students/{id}</span>
+                <p><strong>Description:</strong> Get student by ID</p>
+                <p><strong>Parameters:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><code>id</code> - Student ID (integer)</li>
+                </ul>
+                <p><strong>Response:</strong> Student object</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="url">/api/students/search?name=xxx</span>
+                <p><strong>Description:</strong> Search students by name</p>
+                <p><strong>Parameters:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><code>name</code> - Student name (string)</li>
+                </ul>
+                <p><strong>Response:</strong> Array of matching students</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="url">/api/students</span>
+                <p><strong>Description:</strong> Add a new student</p>
+                <p><strong>Body (form-urlencoded):</strong></p>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>String</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>String</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>phone</td>
+                        <td>String</td>
+                        <td>No</td>
+                    </tr>
+                </table>
+                <p><strong>Response:</strong> Created student object</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <span class="url">/api/students/delete/{id}</span>
+                <p><strong>Description:</strong> Delete a student</p>
+                <p><strong>Parameters:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><code>id</code> - Student ID (integer)</li>
+                </ul>
+                <p><strong>Response:</strong> Success message</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 Testing with Postman</h2>
+            <p>We provide a Postman collection for easy testing!</p>
+            <p>Download: <code>SchoolManager.postman_collection.json</code></p>
+            <ol>
+                <li>Open Postman</li>
+                <li>Click "Import"</li>
+                <li>Select the collection file</li>
+                <li>Start testing!</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>📱 Response Format</h2>
+            <p><strong>Content-Type:</strong> <code>application/json;charset=UTF-8</code></p>
+            <p><strong>Example Student Object:</strong></p>
+            <pre><code>{
+  "id": 1,
+  "name": "Nguyen Van A",
+  "email": "vana@example.com"
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>🔗 Resources</h2>
+            <ul style="margin-left: 20px;">
+                <li><a href="https://github.com/dbau2004/schoolmanager" target="_blank">GitHub Repository</a></li>
+                <li><strong>Technology Stack:</strong> Spring Boot 4.0.1, Java 21, SQL Server</li>
+                <li><strong>Build Tool:</strong> Maven</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>✅ Getting Started</h2>
+            <ol style="margin-left: 20px;">
+                <li>Clone the repository
+                    <pre><code>git clone https://github.com/dbau2004/schoolmanager.git</code></pre>
+                </li>
+                <li>Build the project
+                    <pre><code>mvn clean install</code></pre>
+                </li>
+                <li>Run the application
+                    <pre><code>java -jar target/schoolmanager-0.0.1-SNAPSHOT.jar</code></pre>
+                </li>
+                <li>API will be available at <code>http://localhost:8081/api</code></li>
+            </ol>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
+            <p>School Manager API © 2026 | Built with Spring Boot & ❤️</p>
+        </div>
+    </div>
+</body>
+</html>
