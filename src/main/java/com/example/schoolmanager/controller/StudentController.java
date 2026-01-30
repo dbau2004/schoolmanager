@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.schoolmanager.service.StudentService;
 import com.example.schoolmanager.model.Student;
+import com.example.schoolmanager.repository.StudentRepository;
 
 @RestController
 @RequestMapping(value = "/api/students", produces = "application/json;charset=UTF-8")

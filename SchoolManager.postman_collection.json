@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "schoolmanager-api-collection",
+    "name": "School Manager API",
+    "description": "API testing for School Manager Application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Students",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/students",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["api", "students"]
+        }
+      }
+    },
+    {
+      "name": "Get Student By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/students/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["api", "students", "1"]
+        }
+      }
+    },
+    {
+      "name": "Search Student By Name",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/students/search?name=John",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["api", "students", "search"],
+          "query": [
+            {
+              "key": "name",
+              "value": "John"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add New Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "name",
+              "value": "Nguyen Van A",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "value": "vana@example.com",
+              "type": "text"
+            },
+            {
+              "key": "phone",
+              "value": "0123456789",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/students",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["api", "students"]
+        }
+      }
+    },
+    {
+      "name": "Delete Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/students/delete/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["api", "students", "delete", "1"]
+        }
+      }
+    }
+  ]
+}
