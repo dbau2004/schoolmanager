@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Manager - API Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        .config-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="email"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .endpoints {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .endpoint-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s;
+        }
+        .get-btn { background: #61affe; }
+        .get-btn:hover { background: #4a9fd8; }
+        .post-btn { background: #49cc90; }
+        .post-btn:hover { background: #3ab87f; }
+        .delete-btn { background: #f93e3e; }
+        .delete-btn:hover { background: #d93232; }
+        .response-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .response-section h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 400px;
+            font-size: 12px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.loading { background: #cfe2ff; color: #084298; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 School Manager - API Tester</h1>
+
+        <div class="config-section">
+            <h2>⚙️ Configuration</h2>
+            <div class="form-group">
+                <label for="baseUrl">Base URL:</label>
+                <input 
+                    type="text" 
+                    id="baseUrl" 
+                    value="http://localhost:8081/api"
+                    placeholder="http://localhost:8081/api"
+                >
+                <small style="color: #666;">Change to your server URL (e.g., http://your-server:8081/api)</small>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h2>📝 Add Student</h2>
+            <div class="form-group">
+                <label for="studentName">Name:</label>
+                <input type="text" id="studentName" placeholder="Nguyen Van A">
+            </div>
+            <div class="form-group">
+                <label for="studentEmail">Email:</label>
+                <input type="email" id="studentEmail" placeholder="student@example.com">
+            </div>
+            <div class="form-group">
+                <label for="studentPhone">Phone:</label>
+                <input type="text" id="studentPhone" placeholder="0123456789">
+            </div>
+            <button class="endpoint-btn post-btn" onclick="addStudent()">POST /api/students</button>
+        </div>
+
+        <div class="config-section">
+            <h2>🔍 Query by ID / Search</h2>
+            <div class="form-group">
+                <label for="studentId">Student ID:</label>
+                <input type="number" id="studentId" placeholder="1" min="1">
+            </div>
+            <button class="endpoint-btn get-btn" onclick="getStudentById()">GET /api/students/{id}</button>
+            <button class="endpoint-btn delete-btn" onclick="deleteStudent()">DELETE /api/students/delete/{id}</button>
+        </div>
+
+        <div class="config-section">
+            <h2>🔎 Search by Name</h2>
+            <div class="form-group">
+                <label for="searchName">Name:</label>
+                <input type="text" id="searchName" placeholder="John">
+            </div>
+            <button class="endpoint-btn get-btn" onclick="searchByName()">GET /api/students/search?name=xxx</button>
+        </div>
+
+        <div class="endpoints">
+            <button class="endpoint-btn get-btn" onclick="getAllStudents()">GET All Students</button>
+        </div>
+
+        <div class="response-section">
+            <h3>📊 Response:</h3>
+            <div id="status"></div>
+            <pre id="response">Waiting for API call...</pre>
+        </div>
+    </div>
+
+    <script>
+        function getBaseUrl() {
+            return document.getElementById('baseUrl').value || 'http://localhost:8081/api';
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+        }
+
+        function showResponse(data) {
+            const responseDiv = document.getElementById('response');
+            try {
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+            } catch {
+                responseDiv.textContent = data;
+            }
+        }
+
+        async function apiCall(method, endpoint, body = null) {
+            showStatus('Loading...', 'loading');
+            try {
+                const url = getBaseUrl() + endpoint;
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                };
+
+                if (body) {
+                    options.body = new URLSearchParams(body).toString();
+                }
+
+                const response = await fetch(url, options);
+                
+                if (!response.ok) {
+                    showStatus(`Error: ${response.status} ${response.statusText}`, 'error');
+                    showResponse(`Status: ${response.status}`);
+                    return;
+                }
+
+                const data = await response.json();
+                showStatus('✓ Success!', 'success');
+                showResponse(data);
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                showResponse(`Error: ${error.message}`);
+            }
+        }
+
+        function getAllStudents() {
+            apiCall('GET', '/students');
+        }
+
+        function getStudentById() {
+            const id = document.getElementById('studentId').value;
+            if (!id) {
+                alert('Please enter Student ID');
+                return;
+            }
+            apiCall('GET', `/students/${id}`);
+        }
+
+        function searchByName() {
+            const name = document.getElementById('searchName').value;
+            if (!name) {
+                alert('Please enter name');
+                return;
+            }
+            apiCall('GET', `/students/search?name=${name}`);
+        }
+
+        function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+
+            if (!name || !email) {
+                alert('Please enter Name and Email');
+                return;
+            }
+
+            const body = { name, email };
+            if (phone) body.phone = phone;
+
+            apiCall('POST', '/students', body);
+        }
+
+        function deleteStudent() {
+            const id = document.getElementById('studentId').value;
+            if (!id) {
+                alert('Please enter Student ID');
+                return;
+            }
+            if (confirm(`Delete student ${id}?`)) {
+                apiCall('POST', `/students/delete/${id}`);
+            }
+        }
+    </script>
+</body>
+</html>
